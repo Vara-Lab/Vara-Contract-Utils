@@ -1,0 +1,7 @@
+[package]
+name = "gear-contract-utils"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+gstd = "1.8.1"
