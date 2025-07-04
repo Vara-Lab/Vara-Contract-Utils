@@ -21,7 +21,18 @@ gear-contract-utils = { git = "https://github.com/Vara-Lab/Gear-Contract-Utils" 
 Then in your crate:
 
 ```rust
-use gear_msg_macros::*; // or specific macros and utils module
+use gear_contract_utils::*;
+```
+
+Or:
+
+```rust
+use gear_contract_utils::{
+    send_delayed_msg, 
+    send_msg, 
+    send_msg_for_reply, 
+    utils
+};
 ```
 
 ---

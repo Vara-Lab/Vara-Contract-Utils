@@ -72,6 +72,7 @@
 /// # Notes
 ///
 /// - If you pass a gas reservation ID, you should always use Some()
+/// - Unused gas will be returned to the user
 ///
 /// # Example
 ///
