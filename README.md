@@ -15,19 +15,19 @@ In your `Cargo.toml`, add:
 
 ```toml
 [dependencies]
-gear-contract-utils = { git = "https://github.com/Vara-Lab/Gear-Contract-Utils" }
+vara-contract-utils = { git = "https://github.com/Vara-Lab/Vara-Contract-Utils" }
 ```
 
 Then in your crate:
 
 ```rust
-use gear_contract_utils::*;
+use vara_contract_utils::*;
 ```
 
 Or:
 
 ```rust
-use gear_contract_utils::{
+use vara_contract_utils::{
     send_delayed_msg, 
     send_msg, 
     send_msg_for_reply, 
