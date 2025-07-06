@@ -93,7 +93,7 @@ let result = send_delayed_msg!(
     actor_id,                   // Contract address
     "MyService",                // Contract service name
     "do_later",                 // Contract service method name
-    200_000,                    // explicit gas limit
+    200_000,                    // explicit gas limit (if reservation id is provided, it will be ignored)
     10,                         // amount of blocks to wait
     (),                         // Payload (optional)
     0,                          // Tokens to send (Optional)
