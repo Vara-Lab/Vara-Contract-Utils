@@ -112,10 +112,9 @@ pub fn panic(err: impl Debug) -> ! {
 /// The estimated active era number (relative to the reference era).
 ///
 pub fn testnet_active_era() -> u64 {
-    let block_height = exec::block_height() as u64;
-    let blocks_passed = block_height.saturating_sub(LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK);
-    let eras_passed = blocks_passed.saturating_div(ONE_ERA_IN_BLOCKS);
-    eras_passed
+    let eras_passed = eras_passed_since_init_block(LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK);
+
+    LAST_TESTNET_ACTIVE_ERA_REGISTERED.saturating_add(eras_passed)
 }
 
 /// Estimates the current active era on the **mainnet** based on the local block height.
@@ -133,8 +132,51 @@ pub fn testnet_active_era() -> u64 {
 /// The estimated active era index on mainnet.
 ///
 pub fn mainnet_active_era() -> u64 {
-    let block_height = exec::block_height() as u64;
-    let blocks_passed = block_height.saturating_sub(LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK);
+    let eras_passed = eras_passed_since_init_block(LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK);
+
+    LAST_MAINNET_ACTIVE_ERA_REGISTERED.saturating_add(eras_passed)
+}
+
+
+pub fn blocks_left_for_next_testnet_era() -> u64 {
+    let eras_passed = eras_passed_since_init_block(LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK);
+    let blocks_passed = blocks_passed_since_init_block(LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK);
+
+    if eras_passed >= 1 {
+        let temp = blocks_passed % ONE_ERA_IN_BLOCKS;
+        let blocks_left = ONE_ERA_IN_BLOCKS.saturating_sub(temp);
+
+        blocks_left
+    } else {
+        blocks_passed
+    }
+}
+
+pub fn blocks_left_for_next_mainnet_era() -> u64 {
+    let eras_passed = eras_passed_since_init_block(LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK);
+    let blocks_passed = blocks_passed_since_init_block(LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK);
+
+    if eras_passed >= 1 {
+        let temp = blocks_passed % ONE_ERA_IN_BLOCKS;
+        let blocks_left = ONE_ERA_IN_BLOCKS.saturating_sub(temp);
+
+        blocks_left
+    } else {
+        blocks_passed
+    }
+}
+
+
+pub fn eras_passed_since_init_block(era_init_block: u64) -> u64 {
+    let blocks_passed = blocks_passed_since_init_block(era_init_block);
     let eras_passed = blocks_passed.saturating_div(ONE_ERA_IN_BLOCKS);
+
     eras_passed
+}
+
+pub fn blocks_passed_since_init_block(era_init_block: u64) -> u64 {
+    let block_height = exec::block_height() as u64;
+    let blocks_passed = block_height.saturating_sub(era_init_block);
+
+    blocks_passed
 }
