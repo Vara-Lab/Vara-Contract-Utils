@@ -1,5 +1,5 @@
 use core::fmt::Debug;
-use gstd::{ext, format};
+use gstd::{exec, ext, format};
 
 /// Total number of blocks required to complete the unbonding process.
 ///
@@ -7,14 +7,14 @@ use gstd::{ext, format};
 /// Therefore:
 ///
 /// 230_400 blocks × 3 = 691_200 seconds = 192 hours = 8 days
-pub const TOTAL_BLOCKS_TO_UNBOND: u32 = 230_400;
+pub const TOTAL_BLOCKS_TO_UNBOND: u64 = 230_400;
 
 /// Number of blocks that make up a single era.
 ///
 /// Since each block takes ~3 seconds, this corresponds to:
 ///
 /// 14_400 blocks × 3 = 43_200 seconds = 12 hours per era
-pub const ONE_ERA_IN_BLOCKS: u32 = 14_400;
+pub const ONE_ERA_IN_BLOCKS: u64 = 14_400;
 
 /// Last active era registered on the testnet used as a reference point.
 ///
@@ -95,4 +95,46 @@ pub fn panicking<T, E: Debug, F: FnOnce() -> Result<T, E>>(f: F) -> T {
 /// ```
 pub fn panic(err: impl Debug) -> ! {
     ext::panic(format!("{err:?}"))
+}
+
+/// Estimates the current active era on the **testnet** based on the local block height.
+///
+/// This function calculates how many eras have passed since a known reference point:
+/// `LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK`, which corresponds to the start block of 
+/// `LAST_TESTNET_ACTIVE_ERA_REGISTERED`.
+///
+/// # How it works:
+/// - Fetches the current block height via `exec::block_height()`.
+/// - Computes how many blocks have passed since the known reference era.
+/// - Divides the number of blocks passed by `ONE_ERA_IN_BLOCKS` (blocks per era).
+///
+/// # Returns
+/// The estimated active era number (relative to the reference era).
+///
+pub fn testnet_active_era() -> u64 {
+    let block_height = exec::block_height() as u64;
+    let blocks_passed = block_height.saturating_sub(LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK);
+    let eras_passed = blocks_passed.saturating_div(ONE_ERA_IN_BLOCKS);
+    eras_passed
+}
+
+/// Estimates the current active era on the **mainnet** based on the local block height.
+///
+/// This function calculates how many eras have passed since a known reference point:
+/// `LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK`, which corresponds to the start block of 
+/// `LAST_MAINNET_ACTIVE_ERA_REGISTERED`.
+///
+/// # How it works:
+/// - Fetches the current block height via `exec::block_height()`.
+/// - Computes how many blocks have passed since the known reference era.
+/// - Divides the number of blocks passed by `ONE_ERA_IN_BLOCKS` (blocks per era).
+///
+/// # Returns
+/// The estimated active era index on mainnet.
+///
+pub fn mainnet_active_era() -> u64 {
+    let block_height = exec::block_height() as u64;
+    let blocks_passed = block_height.saturating_sub(LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK);
+    let eras_passed = blocks_passed.saturating_div(ONE_ERA_IN_BLOCKS);
+    eras_passed
 }
