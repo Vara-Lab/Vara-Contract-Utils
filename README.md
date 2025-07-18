@@ -133,3 +133,51 @@ panic(my_error_struct);
 ```
 
 Used to cleanly and safely terminate contract execution with an error message.
+
+### `testnet_active_era`
+
+Returns the current testnet active era.
+
+```rust
+let current_era = testnet_active_era();
+```
+
+### `mainnet_active_era`
+
+Returns the current mainnet active era.
+
+```rust
+let current_era = mainnet_active_era();
+```
+
+### `blocks_left_for_next_testnet_era`
+
+Returns the time remaining until the current testnet active era ends, in blocks.
+
+```rust
+let blocks_left = blocks_left_for_next_testnet_era();
+```
+
+### `blocks_left_for_next_mainnet_era`
+
+Returns the time remaining until the current mainnet active era ends, in blocks.
+
+```rust
+let blocks_left = blocks_left_for_next_mainnet_era();
+```
+
+### `eras_passed_since_init_block`
+
+Returns how many eras have passed since the initial block set for the first calculated given era.
+
+```rust
+let eras_passed = eras_passed_since_init_block();
+```
+
+### `blocks_passed_since_init_block`
+
+Returns how many blocks have passed since the last estimated block with the era change active
+
+```rust
+let blocks_passed = blocks_passed_since_init_block();
+```

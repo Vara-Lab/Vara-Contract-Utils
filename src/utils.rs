@@ -99,15 +99,6 @@ pub fn panic(err: impl Debug) -> ! {
 
 /// Estimates the current active era on the **testnet** based on the local block height.
 ///
-/// This function calculates how many eras have passed since a known reference point:
-/// `LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK`, which corresponds to the start block of 
-/// `LAST_TESTNET_ACTIVE_ERA_REGISTERED`.
-///
-/// # How it works:
-/// - Fetches the current block height via `exec::block_height()`.
-/// - Computes how many blocks have passed since the known reference era.
-/// - Divides the number of blocks passed by `ONE_ERA_IN_BLOCKS` (blocks per era).
-///
 /// # Returns
 /// The estimated active era number (relative to the reference era).
 ///
@@ -138,6 +129,16 @@ pub fn mainnet_active_era() -> u64 {
 }
 
 
+/// Calculates how many **blocks remain** until the next era begins on the **testnet**.
+///
+/// # Logic
+/// - If at least one era has passed:
+///     - Return the number of blocks remaining in the **current era**.
+/// - Otherwise:
+///     - Return the number of blocks passed since the initial block.
+///
+/// # Returns
+/// The number of blocks left before the next testnet era starts.
 pub fn blocks_left_for_next_testnet_era() -> u64 {
     let eras_passed = eras_passed_since_init_block(LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK);
     let blocks_passed = blocks_passed_since_init_block(LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK);
@@ -145,13 +146,23 @@ pub fn blocks_left_for_next_testnet_era() -> u64 {
     if eras_passed >= 1 {
         let temp = blocks_passed % ONE_ERA_IN_BLOCKS;
         let blocks_left = ONE_ERA_IN_BLOCKS.saturating_sub(temp);
-
         blocks_left
     } else {
         blocks_passed
     }
 }
 
+
+/// Calculates how many **blocks remain** until the next era begins on the **mainnet**.
+///
+/// # Logic
+/// - If at least one full era has passed:
+///     - Return the number of blocks remaining in the **current era**.
+/// - Otherwise:
+///     - Returns the number of blocks passed since the reference block.
+///
+/// # Returns
+/// The number of blocks left before the next mainnet era starts.
 pub fn blocks_left_for_next_mainnet_era() -> u64 {
     let eras_passed = eras_passed_since_init_block(LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK);
     let blocks_passed = blocks_passed_since_init_block(LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK);
@@ -159,24 +170,35 @@ pub fn blocks_left_for_next_mainnet_era() -> u64 {
     if eras_passed >= 1 {
         let temp = blocks_passed % ONE_ERA_IN_BLOCKS;
         let blocks_left = ONE_ERA_IN_BLOCKS.saturating_sub(temp);
-
         blocks_left
     } else {
         blocks_passed
     }
 }
 
-
+/// Calculates how many full eras have passed since a given initial block.
+///
+/// # Parameters
+/// - `era_init_block`: The reference block at which a known era started.
+///
+/// # Returns
+/// Number of complete eras that have passed since the given block.
 pub fn eras_passed_since_init_block(era_init_block: u64) -> u64 {
     let blocks_passed = blocks_passed_since_init_block(era_init_block);
     let eras_passed = blocks_passed.saturating_div(ONE_ERA_IN_BLOCKS);
-
     eras_passed
 }
 
+
+/// Calculates how many blocks have passed since a given initial block.
+///
+/// # Parameters
+/// - `era_init_block`: The block number to use as reference.
+///
+/// # Returns
+/// Number of blocks that have passed since the reference block.
 pub fn blocks_passed_since_init_block(era_init_block: u64) -> u64 {
     let block_height = exec::block_height() as u64;
     let blocks_passed = block_height.saturating_sub(era_init_block);
-
     blocks_passed
 }
