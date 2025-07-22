@@ -36,7 +36,7 @@ pub const LAST_MAINNET_ACTIVE_ERA_REGISTERED: u64 = 1469;
 /// Block number at which the `LAST_MAINNET_ACTIVE_ERA_REGISTERED` started on the mainnet.
 ///
 /// Note: this may be offset by approximately 40 seconds from the true start of the era.
-pub const LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK: u64 = 24_302_620; // ~40s late
+pub const LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK: u64 = 24_302_630; // ~40s late
 
 /// A constant representing one whole token in Vara Network (1 token = 10¹² units).
 ///
@@ -151,7 +151,6 @@ pub fn blocks_left_for_next_testnet_era() -> u64 {
         blocks_passed
     }
 }
-
 
 /// Calculates how many **blocks remain** until the next era begins on the **mainnet**.
 ///
