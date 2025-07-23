@@ -26,7 +26,7 @@ pub const LAST_TESTNET_ACTIVE_ERA_REGISTERED: u64 = 1326;
 ///
 /// Note: this value may be approximately 40 seconds later than the actual start of the era
 /// due to timing offsets or recording delay.
-pub const LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK: u64 = 18_925_393; // ~40s late
+pub const LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK: u64 = 18_925_403; // ~40s late
 
 /// Last active era registered on the mainnet used as a reference point.
 ///
@@ -36,7 +36,7 @@ pub const LAST_MAINNET_ACTIVE_ERA_REGISTERED: u64 = 1469;
 /// Block number at which the `LAST_MAINNET_ACTIVE_ERA_REGISTERED` started on the mainnet.
 ///
 /// Note: this may be offset by approximately 40 seconds from the true start of the era.
-pub const LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK: u64 = 24_302_610; // ~40s late
+pub const LAST_MAINNET_ACTIVE_ERA_INIT_BLOCK: u64 = 24_302_610; // ~10s late
 
 /// A constant representing one whole token in Vara Network (1 token = 10¹² units).
 ///
