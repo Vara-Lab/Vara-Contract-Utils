@@ -26,7 +26,7 @@ pub const LAST_TESTNET_ACTIVE_ERA_REGISTERED: u64 = 1326;
 ///
 /// Note: this value may be approximately 40 seconds later than the actual start of the era
 /// due to timing offsets or recording delay.
-pub const LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK: u64 = 18_925_513; // ~40s late
+pub const LAST_TESTNET_ACTIVE_ERA_INIT_BLOCK: u64 = 18_925_393; // ~40s late
 
 /// Last active era registered on the mainnet used as a reference point.
 ///
