@@ -174,7 +174,7 @@ impl MessageBuilder {
     fn get_request(&mut self) -> Vec<u8> {
 
         
-        let payload = if self.payload.is_none() {
+        let payload = if self.payload.is_some() {
             self.payload.take().unwrap()
         } else {
             ().encode()
