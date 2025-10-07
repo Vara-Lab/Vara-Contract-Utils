@@ -15,6 +15,7 @@ pub struct MessageBuilder {
     method_name: Option<&'static str>,
     payload: Option<Vec<u8>>,
     delayed_duration: u32,
+    delayed_with_gas: Option<u64>,
     value: u128,
 }
 
@@ -26,6 +27,7 @@ impl MessageBuilder {
             method_name: None,
             payload: None,
             delayed_duration: 0,
+            delayed_with_gas: None,
             value: 0
         }
     }
@@ -38,7 +40,7 @@ impl MessageBuilder {
     }
 
     /// ## Set the time in blocks to send the message
-    pub fn blocks_to_send_delayed_message(mut self, blocks: u32) -> Self {
+    pub fn delay_in_blocks(mut self, blocks: u32) -> Self {
         self.delayed_duration = blocks;
 
         self
@@ -111,12 +113,24 @@ impl MessageBuilder {
 
         let request = self.get_request();
 
-        let message_id = msg::send_bytes_delayed(
-            self.to.unwrap(), 
-            request, 
-            self.value, 
+        let message_id = if self.delayed_with_gas.is_some() {
+            msg::send_bytes_with_gas_delayed(
+                self.to.unwrap(), 
+                request, 
+                self.delayed_with_gas.unwrap(), 
+                self.value, 
             self.delayed_duration
-        )?;
+            )?
+        } else {
+            msg::send_bytes_delayed(
+                self.to.unwrap(), 
+                request, 
+                self.value, 
+                self.delayed_duration
+            )?
+        };
+
+        
 
         Ok(message_id)
     }

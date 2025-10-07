@@ -123,7 +123,7 @@ use vara_contract_utils::funcs::new_message; // func to get the MessageBuilder
 The builder contains the next methods:
 
 - `send_to`: Set the address to send the message
-- `blocks_to_send_delayed_message`: Set the blocks to wait until send the delayed message, it only works if
+- `delay_in_blocks`: Set the blocks to wait until send the delayed message, it only works if
   you call the `send_delayed` and `send_delayed_with_reservation`, It's optional, by default is 0.
 - `service_name`: Service to call from a sails contract, this method is optional, but if you set the service name, you have to 
   set the method name.
