@@ -26,7 +26,7 @@ impl MessageBuilder {
             service_name: None,
             method_name: None,
             payload: None,
-            delayed_duration: 0,
+            delayed_duration: 1,
             delayed_with_gas: None,
             value: 0
         }
@@ -40,8 +40,16 @@ impl MessageBuilder {
     }
 
     /// ## Set the time in blocks to send the message
+    /// Default: 1 blocks
     pub fn delay_in_blocks(mut self, blocks: u32) -> Self {
         self.delayed_duration = blocks;
+
+        self
+    }
+
+    /// ## Set the gas to spend in delayed message
+    pub fn delayed_with_gas(mut self, gas: u64) -> Self {
+        self.delayed_with_gas = Some(gas);
 
         self
     }

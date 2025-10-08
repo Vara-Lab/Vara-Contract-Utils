@@ -125,6 +125,7 @@ The builder contains the next methods:
 - `send_to`: Set the address to send the message
 - `delay_in_blocks`: Set the blocks to wait until send the delayed message, it only works if
   you call the `send_delayed` and `send_delayed_with_reservation`, It's optional, by default is 0.
+- `delayed_with_gas`: Set the gas to use in the delayed message.
 - `service_name`: Service to call from a sails contract, this method is optional, but if you set the service name, you have to 
   set the method name.
 - `method_name`: Method to call from a service sails contract, this method is optional, but if you set this method, you have
@@ -192,6 +193,20 @@ let result = new_message() // get Ok(MessageId) or Err(gstd::errors::Error)
     .method_name("MethodName") // Set the method name to call
     .send_delayed(); // Send the delayed message
 ```
+
+ Send a delayed message with blocks and gas
+
+ ```rust
+ let contract_address = "0xab43...";
+
+let result = new_message() // get Ok(MessageId) or Err(gstd::errors::Error)
+    .send_to(contract_address) // Set the contract to send the message
+    .service_name("ServiceName") // Set the service name to call 
+    .method_name("MethodName") // Set the method name to call
+    .delay_in_blocks(20) // Set the delay time in blocks
+    .delayed_with_gas(10_000_000_000) // Set the gas to use in the delayed message
+    .send_delayed(); // Send the delayed message
+ ```
 
 - Send a delayed message with reservation id
 
