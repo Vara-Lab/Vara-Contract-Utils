@@ -7,7 +7,7 @@ use gstd::{
     errors::Error,
     ReservationId
 };
-use crate::utils;
+use crate::funcs;
 
 pub struct MessageBuilder {
     to: Option<ActorId>,
@@ -182,14 +182,14 @@ impl MessageBuilder {
 
     fn check_data(&self) {
         if self.to.is_none() {
-            utils::panic("Address to send message cant be empty");
+            funcs::panic("Address to send message cant be empty");
         }
 
         let sails_check_1 = self.service_name.is_some() && self.method_name.is_none();
         let sails_check_2 = self.service_name.is_none() && self.method_name.is_some();
 
         if sails_check_1 || sails_check_2 {
-            utils::panic("To send a message to a contract, set the service and method name");
+            funcs::panic("To send a message to a contract, set the service and method name");
         }
     }
 
