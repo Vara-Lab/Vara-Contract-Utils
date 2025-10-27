@@ -105,6 +105,26 @@ pub fn blocks_left_for_next_testnet_era() -> u64 {
     }
 }
 
+/// Calculates how may milliseconds remain until the next era begins on the **testnet**
+/// 
+/// ### Returns
+/// The number of milliseconds left before the next testnet era starts
+pub fn ms_left_for_next_testnet_era() -> u64 {
+    let eras_passed = eras_passed_since_init_timestamp(LAST_TESTNET_ACTIVE_ERA_INIT_TIMESTAMP);
+    let ms_passed = ms_passed_since_init_timestamp(LAST_TESTNET_ACTIVE_ERA_INIT_TIMESTAMP); 
+
+    if eras_passed >= 1 {
+        let temp = ms_passed % ONE_ERA_IN_MILLISECONDS;
+        let ms_left = ONE_ERA_IN_MILLISECONDS
+            .checked_sub(temp)
+            .unwrap_or(0);
+
+        ms_left
+    } else {
+        ms_passed
+    }
+}
+
 /// Calculates how many **blocks remain** until the next era begins on the **mainnet**.
 ///
 /// ### Returns
@@ -115,7 +135,10 @@ pub fn blocks_left_for_next_mainnet_era() -> u64 {
 
     if eras_passed >= 1 {
         let temp = blocks_passed % ONE_ERA_IN_BLOCKS;
-        let blocks_left = ONE_ERA_IN_BLOCKS.saturating_sub(temp);
+        let blocks_left = ONE_ERA_IN_BLOCKS
+            .checked_sub(temp)
+            .unwrap_or(0);
+
         blocks_left
     } else {
         blocks_passed
@@ -132,7 +155,9 @@ pub fn ms_left_for_next_mainnet_era() -> u64 {
 
     if eras_passed >= 1 {
         let temp = ms_passed % ONE_ERA_IN_MILLISECONDS;
-        let ms_left = ONE_ERA_IN_MILLISECONDS.saturating_sub(temp);
+        let ms_left = ONE_ERA_IN_MILLISECONDS
+            .checked_sub(temp)
+            .unwrap_or(0);
 
         ms_left
     } else {
